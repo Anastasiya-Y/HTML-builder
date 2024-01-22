@@ -24,12 +24,12 @@ const createHtml = async () => {
 
     for (const elem of elements) {
       if (elem.isFile()) {
-        const elemTarget = path.join(htmlDir, elem.name);
+        const elemCur = path.join(htmlDir, elem.name);
 
-        if (path.extname(elemTarget).toLowerCase() === '.html') {
-          const elemContent = await fsPromises.readFile(elemTarget, 'utf-8');
-          const elemName = path.basename(elemTarget).replace('.html', '');
-          template = template.replace(`{{${elemName}}}`, elemContent);
+        if (path.extname(elemCur).toLowerCase() === '.html') {
+          const elemCont = (await fsPromises.readFile(elemCur, 'utf-8')).trim();
+          const elemName = path.basename(elemCur).replace('.html', '');
+          template = template.replace(`{{${elemName}}}`, elemCont);
         }
       }
     }
