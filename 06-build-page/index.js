@@ -22,7 +22,7 @@ const createHtml = async () => {
     const newHtml = await fs.createWriteStream(newHtmlPath);
     const elements = await fsPromises.readdir(htmlDir, { withFileTypes: true });
 
-    for (const elem of elements) {
+    const handledContent = elements.map(async (elem) => {
       if (elem.isFile()) {
         const elemCur = path.join(htmlDir, elem.name);
 
@@ -32,9 +32,10 @@ const createHtml = async () => {
           template = template.replace(`{{${elemName}}}`, elemCont);
         }
       }
-    }
-    newHtml.write(template);
-    newHtml.close();
+    });
+
+    await Promise.all(handledContent);
+    await newHtml.write(template);
   } catch (err) {
     console.log(err.message);
   }
