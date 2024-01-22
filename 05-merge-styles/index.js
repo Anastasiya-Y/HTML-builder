@@ -21,14 +21,13 @@ const mergeStyles = async () => {
 
         if (path.extname(fileTarget).toLowerCase() === '.css') {
           const style = await fsPromises.readFile(fileTarget, 'utf-8');
-          stylesArr.push(style, '\n');
+          stylesArr.push(style);
         }
       }
     }
+    const styles = stylesArr.join('\n');
 
-    for (const chunk of stylesArr) {
-      await fsPromises.appendFile(bundle, chunk);
-    }
+    await fsPromises.appendFile(bundle, styles);
     exit();
   } catch (err) {
     console.log(err.message);
